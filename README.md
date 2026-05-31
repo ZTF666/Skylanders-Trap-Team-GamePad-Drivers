@@ -2,6 +2,8 @@
 
 > Rescued from a drawer. Turned into a proper gamepad.
 
+![Skylanders Trap Team GamePad](controller-pic.jpg)
+
 The Skylanders Trap Team tablet GamePad is a perfectly decent Bluetooth controller that became a paperweight the moment you lost the original dongle — Activision paired it to a proprietary USB receiver, so without it the pad was completely useless.
 
 Turns out the pad is actually a standard Bluetooth Low Energy device. No proprietary protocol, no special hardware. It just needed a driver.
