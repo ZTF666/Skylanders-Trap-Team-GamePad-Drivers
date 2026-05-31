@@ -24,7 +24,7 @@ This project connects to the pad over BLE and exposes it to the OS as a virtual 
 Requires: Bluetooth 4.0+ adapter, Python 3.11+, `sudo` access.
 
 ```bash
-git clone https://github.com/your-username/skylanders-controller-driver
+git clone https://github.com/ZTF666/Skylanders-Trap-Team-GamePad-Drivers
 cd skylanders-controller-driver
 bash linux/install.sh
 ```
@@ -38,7 +38,7 @@ The script handles everything: packages, permissions, udev rules, uinput module,
 Requires: Bluetooth 4.0+ adapter, [ViGEmBus driver](https://github.com/nefarius/ViGEmBus/releases), .NET 6+ SDK.
 
 ```powershell
-git clone https://github.com/your-username/skylanders-controller-driver
+git clone https://github.com/ZTF666/Skylanders-Trap-Team-GamePad-Drivers
 cd skylanders-controller-driver\windows
 dotnet run
 ```
