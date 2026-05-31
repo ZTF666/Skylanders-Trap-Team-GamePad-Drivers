@@ -31,39 +31,40 @@ internal sealed class GamepadMapper : IDisposable
         int lsX = (sbyte)data[14];
         int lsY = (sbyte)data[15];
 
-        // Apply dead-zone
         lsX = DeadZone(lsX); lsY = DeadZone(lsY);
         rsX = DeadZone(rsX); rsY = DeadZone(rsY);
 
         if (Config.InvertY) { lsY = -lsY; rsY = -rsY; }
 
-        var report = new Xbox360Report();
+        var c = _controller;
+
+        // D-pad
+        c.SetButtonState(Xbox360Button.Up,    (b8 & 0x01) != 0);
+        c.SetButtonState(Xbox360Button.Down,  (b8 & 0x02) != 0);
+        c.SetButtonState(Xbox360Button.Left,  (b8 & 0x04) != 0);
+        c.SetButtonState(Xbox360Button.Right, (b8 & 0x08) != 0);
 
         // Face buttons
-        Xbox360Button buttons = Xbox360Button.None;
-        if ((b8 & 0x01) != 0) buttons |= Xbox360Button.Up;
-        if ((b8 & 0x02) != 0) buttons |= Xbox360Button.Down;
-        if ((b8 & 0x04) != 0) buttons |= Xbox360Button.Left;
-        if ((b8 & 0x08) != 0) buttons |= Xbox360Button.Right;
-        if ((b8 & 0x10) != 0) buttons |= Xbox360Button.A;
-        if ((b8 & 0x20) != 0) buttons |= Xbox360Button.B;
-        if ((b8 & 0x40) != 0) buttons |= Xbox360Button.X;
-        if ((b8 & 0x80) != 0) buttons |= Xbox360Button.Y;
-        if ((b9 & 0x10) != 0) buttons |= Xbox360Button.LeftShoulder;
-        if ((b9 & 0x20) != 0) buttons |= Xbox360Button.RightShoulder;
-        report.Buttons = buttons;
+        c.SetButtonState(Xbox360Button.A, (b8 & 0x10) != 0);
+        c.SetButtonState(Xbox360Button.B, (b8 & 0x20) != 0);
+        c.SetButtonState(Xbox360Button.X, (b8 & 0x40) != 0);
+        c.SetButtonState(Xbox360Button.Y, (b8 & 0x80) != 0);
 
-        // Triggers (analog only — no digital button in Xbox 360 protocol)
-        report.LeftTrigger  = l2 ? (byte)255 : (byte)0;
-        report.RightTrigger = r2 ? (byte)255 : (byte)0;
+        // Shoulder buttons
+        c.SetButtonState(Xbox360Button.LeftShoulder,  (b9 & 0x10) != 0);
+        c.SetButtonState(Xbox360Button.RightShoulder, (b9 & 0x20) != 0);
 
-        // Sticks: scale -128..127 → -32768..32767
-        report.LeftThumbX  = Scale(lsX);
-        report.LeftThumbY  = Scale(lsY);
-        report.RightThumbX = Scale(rsX);
-        report.RightThumbY = Scale(rsY);
+        // Triggers
+        c.SetSliderValue(Xbox360Slider.LeftTrigger,  l2 ? (byte)255 : (byte)0);
+        c.SetSliderValue(Xbox360Slider.RightTrigger, r2 ? (byte)255 : (byte)0);
 
-        _controller.SendReport(report);
+        // Sticks
+        c.SetAxisValue(Xbox360Axis.LeftThumbX,  Scale(lsX));
+        c.SetAxisValue(Xbox360Axis.LeftThumbY,  Scale(lsY));
+        c.SetAxisValue(Xbox360Axis.RightThumbX, Scale(rsX));
+        c.SetAxisValue(Xbox360Axis.RightThumbY, Scale(rsY));
+
+        c.SubmitReport();
     }
 
     private static int DeadZone(int v) => Math.Abs(v) <= Config.DeadZone ? 0 : v;
