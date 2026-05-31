@@ -7,7 +7,7 @@ System tray app that connects the Skylanders Trap Team tablet GamePad over BLE a
 ## Installation (recommended — no .NET required)
 
 1. **Install ViGEmBus** — one-time, system-wide:  
-   https://github.com/nefarius/ViGEmBus/releases  
+   [https://github.com/nefarius/ViGEmBus/releases](https://github.com/nefarius/ViGEmBus/releases)  
    Download the latest `.exe` installer, run it, **reboot your PC**.
 
 2. **Download `SkylandersGamePad.exe`** from the [Releases page](https://github.com/ZTF666/Skylanders-Trap-Team-GamePad-Drivers/releases/latest) and double-click it to run.
@@ -74,7 +74,7 @@ Open **joy.cpl** (`Win+R → joy.cpl`) or launch Steam in Big Picture mode. The 
 ## Troubleshooting
 
 **ViGEmBus not found / ViGEmClient throws on startup**  
-Install the ViGEmBus driver (see Prerequisites) and reboot.
+Install the ViGEmBus driver from [https://github.com/nefarius/ViGEmBus/releases](https://github.com/nefarius/ViGEmBus/releases) and reboot.
 
 **Pad never found**  
 - **Check your Bluetooth adapter supports BLE.** This is the most common gotcha — cheap or older dongles often only support Classic Bluetooth (2.x/3.x), which is a completely different protocol. The pad is invisible to those. You need a **Bluetooth 4.0 or higher** adapter. To check: Device Manager → Bluetooth → right-click your adapter → Properties. Any adapter listed as BT 4.0+ will work. A basic BT 4.0 USB dongle costs £3–5 and is plug-and-play on Windows.
