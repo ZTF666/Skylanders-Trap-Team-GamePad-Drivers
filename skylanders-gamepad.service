@@ -1,0 +1,12 @@
+[Unit]
+Description=Skylanders Trap Team GamePad BLE driver
+After=bluetooth.target
+
+[Service]
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/usr/bin/python3 /home/ztf/Documents/Workspace/skylanders-controller-driver/main.py
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target
