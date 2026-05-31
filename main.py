@@ -26,7 +26,14 @@ async def run(gamepad: VirtualGamepad, debug: bool) -> None:
     backoff = config.RECONNECT_BACKOFF_BASE
 
     while True:
-        device = await find_device()
+        try:
+            device = await find_device()
+        except BleakError as exc:
+            print(f"Bluetooth not ready — retrying in {backoff:.0f}s… ({exc})")
+            await asyncio.sleep(backoff)
+            backoff = min(backoff * 2, config.RECONNECT_BACKOFF_MAX)
+            continue
+
         if device is None:
             print(f"No device found — retrying in {backoff:.0f}s…")
             await asyncio.sleep(backoff)

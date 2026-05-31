@@ -1,6 +1,7 @@
 [Unit]
 Description=Skylanders Trap Team GamePad BLE driver
-After=bluetooth.target
+After=bluetooth.service
+Wants=bluetooth.service
 
 [Service]
 Environment=PYTHONUNBUFFERED=1
