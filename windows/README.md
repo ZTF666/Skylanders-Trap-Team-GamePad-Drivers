@@ -8,11 +8,13 @@ System tray app that connects the Skylanders Trap Team tablet GamePad over BLE a
 
 1. **Install ViGEmBus** — one-time, system-wide:  
    https://github.com/nefarius/ViGEmBus/releases  
-   Download the latest `.exe` installer, run it, reboot.
+   Download the latest `.exe` installer, run it, **reboot your PC**.
 
-2. **Download `SkylandersGamePad.exe`** from the [Releases page](https://github.com/ZTF666/Skylanders-Trap-Team-GamePad-Drivers/releases/latest) and run it.
+2. **Download `SkylandersGamePad.exe`** from the [Releases page](https://github.com/ZTF666/Skylanders-Trap-Team-GamePad-Drivers/releases/latest) and double-click it to run.
 
-That's it. No .NET install needed — the exe is self-contained.
+> **Note:** `SkylandersGamePad.exe` is not a setup wizard — it is the app itself. Double-clicking it starts it immediately. Look for the tray icon (bottom-right corner of your taskbar) after running it.
+
+No .NET install needed — the exe is self-contained.
 
 ---
 
