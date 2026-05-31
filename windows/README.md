@@ -77,10 +77,10 @@ Open **joy.cpl** (`Win+R → joy.cpl`) or launch Steam in Big Picture mode. The 
 Install the ViGEmBus driver (see Prerequisites) and reboot.
 
 **Pad never found**  
+- **Check your Bluetooth adapter supports BLE.** This is the most common gotcha — cheap or older dongles often only support Classic Bluetooth (2.x/3.x), which is a completely different protocol. The pad is invisible to those. You need a **Bluetooth 4.0 or higher** adapter. To check: Device Manager → Bluetooth → right-click your adapter → Properties. Any adapter listed as BT 4.0+ will work. A basic BT 4.0 USB dongle costs £3–5 and is plug-and-play on Windows.
 - Confirm BT adapter is enabled in Device Manager.
 - Make sure the pad is powered on and not already connected to another device.
 - Try moving the pad closer to the adapter.
-- The driver first filters by service UUID; if that misses, it scans by device name. Run a debug build and attach a debugger to see which phase matches.
 
 **Pad found but no inputs register in games**  
 Some games enumerate gamepads at launch. Quit and relaunch the game after the tray icon turns green.

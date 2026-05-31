@@ -40,6 +40,8 @@ The script handles everything: packages, permissions, udev rules, uinput module,
 
 No .NET install needed — the exe is self-contained. A tray icon appears and turns green when the pad connects. Full details in [`windows/README.md`](windows/README.md).
 
+> **Bluetooth adapter:** your adapter must support **BLE (Bluetooth 4.0+)**. Classic Bluetooth dongles (2.x/3.x) will not work — the pad won't be detected at all. Most built-in laptop adapters and any dongle made after ~2013 support BLE. If in doubt, check the spec before buying.
+
 ---
 
 ## How it works
