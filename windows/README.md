@@ -4,26 +4,31 @@ System tray app that connects the Skylanders Trap Team tablet GamePad over BLE a
 
 ---
 
-## Prerequisites
+## Installation (recommended — no .NET required)
 
-1. **ViGEmBus driver** — install once, system-wide:
+1. **Install ViGEmBus** — one-time, system-wide:  
    https://github.com/nefarius/ViGEmBus/releases  
    Download the latest `.exe` installer, run it, reboot.
 
-2. **.NET 6 SDK (or newer)**:
-   https://dotnet.microsoft.com/download
+2. **Download `SkylandersGamePad.exe`** from the [Releases page](https://github.com/ZTF666/Skylanders-Trap-Team-GamePad-Drivers/releases/latest) and run it.
 
-3. **Bluetooth 4.0+ adapter** with BLE (built-in on most laptops made after ~2013).
+That's it. No .NET install needed — the exe is self-contained.
 
 ---
 
-## Build & run
+## Build from source (optional)
+
+Requires: .NET 6+ SDK, Bluetooth 4.0+ adapter.
 
 ```powershell
 cd windows
-dotnet build -c Release
-dotnet run            # or run the built .exe directly
+dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o publish
+.\publish\SkylandersGamePad.exe
 ```
+
+---
+
+## Usage
 
 The app starts minimised to the system tray. The tray icon shows connection state:
 

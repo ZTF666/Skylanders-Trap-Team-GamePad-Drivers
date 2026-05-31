@@ -35,15 +35,10 @@ The script handles everything: packages, permissions, udev rules, uinput module,
 
 ## Windows — quick start
 
-Requires: Bluetooth 4.0+ adapter, [ViGEmBus driver](https://github.com/nefarius/ViGEmBus/releases), .NET 6+ SDK.
+1. Install the [ViGEmBus driver](https://github.com/nefarius/ViGEmBus/releases) (one-time, requires reboot)
+2. Download **`SkylandersGamePad.exe`** from the [Releases page](https://github.com/ZTF666/Skylanders-Trap-Team-GamePad-Drivers/releases/latest) and run it
 
-```powershell
-git clone https://github.com/ZTF666/Skylanders-Trap-Team-GamePad-Drivers
-cd skylanders-controller-driver\windows
-dotnet run
-```
-
-A tray icon appears and turns green when the pad connects. Full details in [`windows/README.md`](windows/README.md).
+No .NET install needed — the exe is self-contained. A tray icon appears and turns green when the pad connects. Full details in [`windows/README.md`](windows/README.md).
 
 ---
 
