@@ -1,41 +1,90 @@
 # Skylanders Trap Team GamePad Driver
 
-Connects the Skylanders Trap Team tablet GamePad over Bluetooth LE and exposes it to the OS as a standard Xbox-style virtual gamepad — no proprietary dongle required.
+> Rescued from a drawer. Turned into a proper gamepad.
 
-Pick your platform:
+The Skylanders Trap Team tablet GamePad is a perfectly decent Bluetooth controller that became a paperweight the moment you lost the original dongle — Activision paired it to a proprietary USB receiver, so without it the pad was completely useless.
 
-| Platform | Stack | Folder |
-|---|---|---|
-| **Linux** (Raspberry Pi 5, Linux Mint, any BlueZ system) | Python 3 + bleak + python-evdev (uinput) | [`linux/`](linux/) |
-| **Windows** 10/11 | C# .NET 6+ + WinRT BLE + ViGEmBus | [`windows/`](windows/) |
+Turns out the pad is actually a standard Bluetooth Low Energy device. No proprietary protocol, no special hardware. It just needed a driver.
+
+This project connects to the pad over BLE and exposes it to the OS as a virtual Xbox-style gamepad. Plug-and-play in any game, no dongle required.
 
 ---
 
-## BLE Protocol
+## Platform support
 
-The pad advertises service UUID `00001531-0000-1000-8000-00805f9b34fb`. Its actual GATT service UUID is `533e1531-3abe-f33f-cd00-594e8b0a8ea3` with a single read+notify characteristic. Input packets are 20 bytes, streamed continuously.
+| Platform | Folder | Notes |
+|---|---|---|
+| **Linux** — Raspberry Pi 5, Linux Mint, any BlueZ system | [`linux/`](linux/) | Python 3, runs as a systemd service |
+| **Windows** 10 / 11 | [`windows/`](windows/) | C# .NET 6+, system tray app |
+
+---
+
+## Linux — quick start
+
+Requires: Bluetooth 4.0+ adapter, Python 3.11+, `sudo` access.
+
+```bash
+git clone https://github.com/your-username/skylanders-controller-driver
+cd skylanders-controller-driver
+bash linux/install.sh
+```
+
+The script handles everything: packages, permissions, udev rules, uinput module, and a systemd service that starts automatically on login. Full details and troubleshooting in [`linux/README.md`](linux/README.md).
+
+---
+
+## Windows — quick start
+
+Requires: Bluetooth 4.0+ adapter, [ViGEmBus driver](https://github.com/nefarius/ViGEmBus/releases), .NET 6+ SDK.
+
+```powershell
+git clone https://github.com/your-username/skylanders-controller-driver
+cd skylanders-controller-driver\windows
+dotnet run
+```
+
+A tray icon appears and turns green when the pad connects. Full details in [`windows/README.md`](windows/README.md).
+
+---
+
+## How it works
+
+The pad advertises a Bluetooth LE service. This driver scans for that service UUID, connects, and subscribes to the notify characteristic. The pad then streams 20-byte input packets continuously. The driver parses those packets and forwards every button press, stick movement, and trigger pull to a virtual Xbox-style controller that the OS and any game can read normally.
+
+Auto-reconnects on disconnect. Turn the pad off and back on — it comes back without restarting anything.
+
+### Packet layout
 
 | Byte | Mask | Input |
 |---|---|---|
-| `[8]` | `0x01` | D-pad Up |
-| `[8]` | `0x02` | D-pad Down |
-| `[8]` | `0x04` | D-pad Left |
-| `[8]` | `0x08` | D-pad Right |
-| `[8]` | `0x10` | A |
-| `[8]` | `0x20` | B |
-| `[8]` | `0x40` | X |
-| `[8]` | `0x80` | Y |
-| `[9]` | `0x10` | L1 |
-| `[9]` | `0x20` | R1 |
-| `[10]` | `0xFF` | L2 (0xFF = held) |
-| `[11]` | `0xFF` | R2 (0xFF = held) |
+| `[8]` | `0x01` / `0x02` / `0x04` / `0x08` | D-pad Up / Down / Left / Right |
+| `[8]` | `0x10` / `0x20` / `0x40` / `0x80` | A / B / X / Y |
+| `[9]` | `0x10` / `0x20` | L1 / R1 |
+| `[10]` | `0xFF` = held | L2 |
+| `[11]` | `0xFF` = held | R2 |
 | `[12]` | signed int8 | Right Stick X |
 | `[13]` | signed int8 | Right Stick Y |
 | `[14]` | signed int8 | Left Stick X |
 | `[15]` | signed int8 | Left Stick Y |
 
+Protocol originally reverse-engineered for macOS by [dasilvacontin](https://github.com/dasilvacontin/SkylandersGamePadEnabler).
+
 ---
 
-## Quick start
+## Repo structure
 
-See the README in your platform's folder for prerequisites, install steps, and troubleshooting.
+```
+linux/          Python driver — bleak (BLE) + evdev (uinput virtual gamepad)
+  install.sh    One-command installer
+  main.py       Entry point, reconnect loop
+  ble.py        BLE scanning and characteristic discovery
+  gamepad.py    uinput virtual gamepad
+  config.py     All tunables (dead-zone, Y-inversion, timeouts…)
+
+windows/        C# driver — WinRT BLE + ViGEm virtual Xbox 360 controller
+  Program.cs    Entry point
+  TrayApp.cs    System tray UI
+  BleController.cs  BLE scanning and connection
+  GamepadMapper.cs  Packet parsing + ViGEm report
+  Config.cs     All tunables
+```
